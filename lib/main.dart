@@ -9,7 +9,9 @@ import './screens/home.dart';
 void main() {
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (context) => CityProvider())],
-    child: const AppStateContainer(child: MyApp()),
+    child: const AppStateContainer(
+      child: MyApp(),
+    ),
   ));
   // runApp(const MyApp());
 }

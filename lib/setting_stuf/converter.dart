@@ -2,16 +2,19 @@
 /// intended to use while parsing json values where type will be dynamic
 /// returns value of type double
 
-intToDouble(dynamic val) {
-  if (val is double) {
-    return val;
-  } else if (val is int) {
-    return val.toDouble();
-  } else {
-    throw Exception(
-        "value is not of type 'int' or 'double' got type '${val.runtimeType}'");
-  }
-}
+// commented on the 13 January 2024 09:40 am
+// intToDouble(dynamic val) {
+//   if (val is double) {
+//     return val;
+//   } else if (val is int) {
+//     return val.toDouble();
+//   } else {
+//     throw Exception(
+//         "value is not of type 'int' or 'double' got type '${val.runtimeType}'");
+//   }
+// }
+
+// Before on the 13th January 2024
 // intToDouble(dynamic val) {
 //   if (val.runtimeType == double) {
 //     return val;
@@ -40,14 +43,14 @@ class Temperature {
     switch (unit) {
       case TemperatureUnit.kelvin:
         return kelvin;
-        break;
+      // break;
       case TemperatureUnit.celsius:
         return celsius;
-        break;
+      // break;
       case TemperatureUnit.fahrenheit:
         return fahrenheit;
-        break;
+      // break;
     }
-    return fahrenheit;
+    // return fahrenheit;
   }
 }
