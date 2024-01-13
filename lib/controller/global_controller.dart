@@ -17,7 +17,7 @@ class GlobalController extends GetxController {
   final RxBool isFahrenheit = false.obs;
   // final city = City().obs;
 
-  RxBool checkStatus() => _isLoading;
+  RxBool checkStatus([WeatherData? cityWeatherData]) => _isLoading;
   RxDouble getlat() => _lat;
   RxDouble getlng() => _lng;
   WeatherData getWeatherData([String? city]) => weatherData.value;
@@ -57,5 +57,15 @@ class GlobalController extends GetxController {
         _isLoading.value = false;
       });
     });
+  }
+
+  Future<void> getDataForCity(String cityName) async {
+    try {
+      WeatherData cityWeatherData = await fetchData().getDataForCity(cityName);
+      checkStatus(cityWeatherData);
+    } catch (e) {
+      print('Error fetching weather data for $cityName: $e');
+      // Handle the error if fetching data fails
+    }
   }
 }

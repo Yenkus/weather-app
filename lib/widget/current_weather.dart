@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:weatherapp_starter_project/models/current_weather_data.dart';
+import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
+import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
 import '../util/custom_colors.dart';
 
 class CurrentWeatherWidget extends StatelessWidget {
   final WeatherDataCurrent weatherDataCurrent;
-  CurrentWeatherWidget(this.weatherDataCurrent);
+  const CurrentWeatherWidget(this.weatherDataCurrent, {super.key});
 
   Widget CurrentWeatherDataWidget() {
+    // @override
+    // Widget build(BuildContext context) {
+    //   ThemeData appTheme = AppStateContainer.of(context).theme;
+    //   TemperatureUnit unit = AppStateContainer.of(context).temperatureUnit;
+    //   Temperature temperature = Temperature(_kelvin);
+    //   // int currentTemp = this.weatherDataCurrent.current.temp?.as(unit)?.round()??0;
+    //   //  int currentTemp = this.weatherDataCurrent.current.temp.as(unit).round();
+    //   int currentTemp =
+    //       weatherDataCurrent.current.temp.temperature().as(unit).round();
+    // }
+
+// In line 26:
+// Text (" ${currentTemp}°",
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [

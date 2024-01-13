@@ -42,10 +42,16 @@ class Themes {
         },
       )).copyWith(secondary: Colors.black));
 
+  // static ThemeData getTheme(int code) {
+  //   if (code == LIGHT_THEME_CODE) {
+  //     return _light;
+  //   }
+  //   return _dark;
+  // }
   static ThemeData getTheme(int code) {
-    if (code == LIGHT_THEME_CODE) {
-      return _light;
+    if (code == DARK_THEME_CODE) {
+      return _dark;
     }
-    return _dark;
+    return _light;
   }
 }

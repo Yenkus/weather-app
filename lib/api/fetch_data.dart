@@ -28,6 +28,25 @@ class fetchData {
 
     return weatherData!;
   }
+
+  Future<WeatherData> getDataForCity(String cityName) async {
+    var response = await http.get(Uri.parse(apiURLForCity(cityName)));
+    var jsonString = jsonDecode(response.body);
+    // Assuming your API returns weather data for the provided city name
+    weatherData = WeatherData(
+      WeatherDataCurrent.fromJson(jsonString),
+      WeatherDataHourly.fromJson(jsonString),
+      WeatherDataDaily.fromJson(jsonString),
+    );
+    return weatherData!;
+  }
+
+  String apiURLForCity(String cityName) {
+    // Create API URL based on city name
+    String url =
+        "https://api.openweathermap.org/data/3.0/onecall?q=$cityName&appid=$api_key&exclude=minutely&units=metric";
+    return url;
+  }
 }
 
 String apiURL(lat, lng) {

@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:weatherapp_starter_project/data/city_provider.dart';
 import 'package:weatherapp_starter_project/screens/city_manager.dart';
 import 'package:weatherapp_starter_project/screens/settings_page.dart';
+import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
+import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
 import 'package:weatherapp_starter_project/util/custom_colors.dart';
 import '../controller/global_controller.dart';
 import '../widget/Sun_Info.dart';
@@ -23,8 +25,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final globalcontroller = Get.put(GlobalController(), permanent: true);
   @override
-  @override
   Widget build(BuildContext context) {
+    // Your existing HomeScreen implementation
+    // Make sure to use AppStateContainer.of(context) to access the theme and temperature unit
+
+    ThemeData appTheme = AppStateContainer.of(context).theme;
+    TemperatureUnit temperatureUnit =
+        AppStateContainer.of(context).temperatureUnit;
+
+    // Debugging: Print retrieved data
+    print("Theme: $appTheme");
+    print("Temperature Unit: $temperatureUnit");
+
+    // Rest of your HomeScreen code
     return Consumer<CityProvider>(builder: (context, value, child) {
       return Scaffold(
           appBar: AppBar(
@@ -41,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const CityManagerPage()));
+                                builder: (context) =>
+                                    const WeatherCityManagerPage()));
                       },
                       icon: const Icon(
                         Icons.menu,
@@ -113,6 +127,108 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 }
+
+// commented on the 11th of January 2024
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+
+// class _HomeScreenState extends State<HomeScreen> {
+//   final globalcontroller = Get.put(GlobalController(), permanent: true);
+//   @override
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<CityProvider>(builder: (context, value, child) {
+//       return Scaffold(
+//           appBar: AppBar(
+//             backgroundColor: CustomColors.firstGradientColor,
+//             title: const Text(
+//               'My Weather',
+//               style: TextStyle(color: Colors.white),
+//             ),
+//             // title: const Text('My Weather'),
+//             actions: (value.hasDataLoaded == true)
+//                 ? [
+//                     IconButton(
+//                       onPressed: () {
+//                         Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                                 builder: (context) =>  CityManagerPage()));
+//                       },
+//                       icon: const Icon(
+//                         Icons.menu,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                     IconButton(
+//                       onPressed: () {
+//                         Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                                 builder: (context) => const SettingsScreen()));
+//                       },
+//                       icon: const Icon(
+//                         Icons.settings,
+//                         color: Colors.white,
+//                       ),
+//                     ),
+//                   ]
+//                 : [
+//                     // Show nothing when weather data hasn't loaded
+//                   ],
+//           ),
+//           body: Obx(() => globalcontroller.checkStatus().isTrue
+//               ? Center(
+//                   child: Column(
+//                       mainAxisAlignment: MainAxisAlignment.center,
+//                       children: [
+//                         Image.asset('assets/icons/clouds.png'),
+//                         const SizedBox(
+//                           height: 10,
+//                         ),
+//                         const CircularProgressIndicator(),
+//                       ]),
+//                 )
+//               : ListView(
+//                   scrollDirection: Axis.vertical,
+//                   children: [
+//                     const SizedBox(
+//                       height: 20,
+//                     ),
+//                     const HeaderSc(),
+//                     CurrentWeatherWidget(
+//                         globalcontroller.getWeatherData().weatherDataCurrent()),
+//                     //globalcontroller.getWeatherData().weatherDataCurrent()),
+//                     const SizedBox(
+//                       height: 20,
+//                     ),
+//                     HourlyDataWidget(
+//                       weatherDataHourly:
+//                           globalcontroller.getWeatherData().weatherDataHourly(),
+//                     ),
+//                     SunInfo(
+//                         weatherDataCurrent: globalcontroller
+//                             .getWeatherData()
+//                             .weatherDataCurrent()),
+//                     DailyForecast(
+//                       weatherDataDaily:
+//                           globalcontroller.getWeatherData().weatherDataDaily(),
+//                     ),
+//                     const Divider(),
+//                     ComfortLevel(
+//                       weatherDataCurrent: globalcontroller
+//                           .getWeatherData()
+//                           .weatherDataCurrent(),
+//                     )
+//                   ],
+//                 )));
+//     });
+//   }
+// }
 
 
 
