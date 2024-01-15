@@ -37,7 +37,51 @@ class GlobalController extends GetxController {
   }
 
   RxInt getIndex() => cardIndex;
-  getLocation() async {
+  // getLocation() async {
+  //   bool isEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!isEnabled) return Future.error('Service is not enabled');
+//
+  //   LocationPermission locationP = await Geolocator.checkPermission();
+  //   if (locationP == LocationPermission.deniedForever) {
+  //     Future.error('Service denied forever');
+  //   } else if (locationP == LocationPermission.denied) {
+  //     locationP = await Geolocator.requestPermission();
+  //     if (locationP == LocationPermission.denied) {
+  //       Future.error('Service denied');
+  //     }
+  //   }
+//
+  //   await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+  //       .then((value) {
+  //     _lat.value = value.latitude;
+  //     _lng.value = value.longitude;
+//
+  //     return fetchData()
+  //         .getData(_lat.value, _lng.value,
+  //             unit)
+  //         .then((value) {
+  //       weatherData.value = value;
+  //       _isLoading.value = false;
+  //     });
+  //     // commented on the 13th January 2024 08:05 am
+  //     // return fetchData().getData(_lat.value, _lng.value).then((value) {
+  //     //   weatherData.value = value;
+  //     //   _isLoading.value = false;
+  //     // });
+  //   });
+  // }
+//
+  // Future<void> getDataForCity(String cityName) async {
+  //   try {
+  //     WeatherData cityWeatherData = await fetchData().getDataForCity(cityName);
+  //     checkStatus(cityWeatherData);
+  //   } catch (e) {
+  //     print('Error fetching weather data for $cityName: $e');
+  //     // Handle the error if fetching data fails
+  //   }
+  // }
+
+  Future<void> getLocation({TemperatureUnit? unit}) async {
     bool isEnabled = await Geolocator.isLocationServiceEnabled();
     if (!isEnabled) return Future.error('Service is not enabled');
 
@@ -51,46 +95,26 @@ class GlobalController extends GetxController {
       }
     }
 
-    Future<void> getLocation(TemperatureUnit unit) async {
-      bool isEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!isEnabled) return Future.error('Service is not enabled');
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low)
+        .then((value) {
+      _lat.value = value.latitude;
+      _lng.value = value.longitude;
 
-      LocationPermission locationP = await Geolocator.checkPermission();
-      if (locationP == LocationPermission.deniedForever) {
-        Future.error('Service denied forever');
-      } else if (locationP == LocationPermission.denied) {
-        locationP = await Geolocator.requestPermission();
-        if (locationP == LocationPermission.denied) {
-          Future.error('Service denied');
-        }
-      }
-
-      await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high)
-          .then((value) {
-        _lat.value = value.latitude;
-        _lng.value = value.longitude;
-
-        return fetchData().getData(_lat.value, _lng.value, unit).then((value) {
-          weatherData.value = value;
-          _isLoading.value = false;
-        });
-        // commented on the 13th January 2024 08:05 am
-        // return fetchData().getData(_lat.value, _lng.value).then((value) {
-        //   weatherData.value = value;
-        //   _isLoading.value = false;
-        // });
+      return fetchData().getData(_lat.value, _lng.value, unit!).then((value) {
+        weatherData.value = value;
+        _isLoading.value = false;
       });
-    }
+    });
   }
 
-  Future<void> getDataForCity(String cityName) async {
+  Future<void> getDataForCity(String cityName, TemperatureUnit unit) async {
     try {
-      WeatherData cityWeatherData = await fetchData().getDataForCity(cityName);
+      WeatherData cityWeatherData =
+          await fetchData().getDataForCity(cityName, unit);
       checkStatus(cityWeatherData);
     } catch (e) {
       print('Error fetching weather data for $cityName: $e');
-      // Handle the error if fetching data fails
+      // Handle the error if fetching data fails
     }
   }
 }

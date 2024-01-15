@@ -40,46 +40,48 @@ class _HomeScreenState extends State<HomeScreen> {
     // Rest of your HomeScreen code
     return Consumer<CityProvider>(builder: (context, value, child) {
       return Scaffold(
-          appBar: AppBar(
-            backgroundColor: CustomColors.firstGradientColor,
-            title: const Text(
-              'My Weather',
-              style: TextStyle(color: Colors.white),
-            ),
-            // title: const Text('My Weather'),
-            actions: (value.hasDataLoaded == true)
-                ? [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const WeatherCityManagerPage()));
-                      },
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SettingsScreen()));
-                      },
-                      icon: const Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ]
-                : [
-                    // Show nothing when weather data hasn't loaded
-                  ],
+        appBar: AppBar(
+          backgroundColor: appTheme.primaryColor,
+          // backgroundColor: CustomColors.firstGradientColor,
+          title: const Text(
+            'My Weather',
+            style: TextStyle(color: Colors.white),
           ),
-          body: Obx(() => globalcontroller.checkStatus().isTrue
+          // title: const Text('My Weather'),
+          actions: (value.hasDataLoaded == true)
+              ? [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const WeatherCityManagerPage()));
+                    },
+                    icon: const Icon(
+                      Icons.menu,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SettingsScreen()));
+                    },
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]
+              : [
+                  // Show nothing when weather data hasn't loaded
+                ],
+        ),
+        body: Obx(
+          () => globalcontroller.checkStatus().isTrue
               ? Center(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +125,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           .weatherDataCurrent(),
                     )
                   ],
-                )));
+                ),
+        ),
+      );
     });
   }
 }

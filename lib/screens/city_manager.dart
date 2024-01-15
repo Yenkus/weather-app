@@ -8,6 +8,8 @@ import 'package:weatherapp_starter_project/api/api_key.dart';
 import 'package:weatherapp_starter_project/api/fetch_data.dart';
 import 'package:weatherapp_starter_project/controller/global_controller.dart';
 import 'package:weatherapp_starter_project/models/weather_data.dart';
+import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
+import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
 
 class WeatherCityManagerPage extends StatefulWidget {
   const WeatherCityManagerPage({super.key});
@@ -27,10 +29,12 @@ class _WeatherCityManagerPageState extends State<WeatherCityManagerPage> {
     });
   }
 
-  Future<void> fetchWeatherForCity(String cityName) async {
+  Future<void> fetchWeatherForCity(
+      String cityName, TemperatureUnit temperatureUnit) async {
     fetchData dataFetcher = fetchData();
     try {
-      WeatherData cityWeatherData = await dataFetcher.getDataForCity(cityName);
+      WeatherData cityWeatherData =
+          await dataFetcher.getDataForCity(cityName, temperatureUnit);
       globalcontroller.checkStatus(cityWeatherData);
     } catch (e) {
       print('Error fetching weather data for $cityName: $e');
@@ -91,14 +95,20 @@ class _WeatherCityManagerPageState extends State<WeatherCityManagerPage> {
           ),
           Expanded(
             child: ListView.builder(
+              shrinkWrap: true,
               itemCount: cityManager.length,
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(cityManager[index]),
                   onTap: () {
                     String selectedCity = cityManager[index];
-                    fetchWeatherForCity(selectedCity);
+                    fetchWeatherForCity(selectedCity,
+                        AppStateContainer.of(context).temperatureUnit);
                   },
+                  // onTap: () {
+                  //   String selectedCity = cityManager[index];
+                  //   fetchWeatherForCity(selectedCity);
+                  // },
                 );
               },
             ),

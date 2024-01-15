@@ -32,7 +32,8 @@ class fetchData {
   }
 
   // ask about the get city function
-  Future<WeatherData> getDataForCity(String cityName) async {
+  Future<WeatherData> getDataForCity(
+      String cityName, TemperatureUnit? unit) async {
     var response = await http.get(Uri.parse(apiURLForCity(cityName)));
     var jsonString = jsonDecode(response.body);
     // Assuming your API returns weather data for the provided city name
