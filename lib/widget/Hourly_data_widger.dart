@@ -115,11 +115,19 @@ class HourlyDetails extends StatelessWidget {
     return time;
   }
 
-  String getFormattedTemperature({required BuildContext context}) {
-    // String getFormattedTemperature() {
-    return AppStateContainer.of(context).getFormattedTemperature(
-        temperature, AppStateContainer.of(context).temperatureUnit);
+  String getFormattedTemperature(
+      {required BuildContext context, required int temperature}) {
+//  String getFormattedTemperature(int temperature) {
+    TemperatureUnit unit = AppStateContainer.of(context).temperatureUnit;
+    return TemperatureFormatter.getFormattedTemperature(temperature, unit);
   }
+
+  // String getFormattedTemperature(
+  //     {required BuildContext context, required int temperature}) {
+  //   // String getFormattedTemperature() {
+  //   return AppStateContainer.of(context).getFormattedTemperature(
+  //       temperature, AppStateContainer.of(context).temperatureUnit);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +155,7 @@ class HourlyDetails extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(bottom: 10),
           child: Text(
-            getFormattedTemperature(context: context),
+            getFormattedTemperature(context: context, temperature: temperature),
             style: index == cardindex
                 ? const TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.white)

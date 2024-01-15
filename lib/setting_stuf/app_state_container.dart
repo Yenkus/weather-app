@@ -86,4 +86,25 @@ class _InheritedStateContainer extends InheritedWidget {
 
   @override
   bool updateShouldNotify(_InheritedStateContainer oldWidget) => true;
+
+  static _AppStateContainerState of(BuildContext context) {
+    var widget =
+        context.dependOnInheritedWidgetOfExactType<_InheritedStateContainer>();
+    return widget!.data;
+  }
+}
+
+class TemperatureFormatter {
+  static String getFormattedTemperature(int temperature, TemperatureUnit unit) {
+    switch (unit) {
+      case TemperatureUnit.celsius:
+        return '$temperature°C';
+      case TemperatureUnit.fahrenheit:
+        int fahrenheitTemperature = ((temperature * 9 / 5) + 32).round();
+        return '$fahrenheitTemperature°F';
+      case TemperatureUnit.kelvin:
+        double kelvinTemperature = temperature + 273.15;
+        return '${kelvinTemperature.toStringAsFixed(2)}K';
+    }
+  }
 }

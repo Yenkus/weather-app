@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weatherapp_starter_project/models/current_weather_data.dart';
 import 'package:weatherapp_starter_project/models/weather_data.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
 
 class ComfortLevel extends StatelessWidget {
   final WeatherDataCurrent weatherDataCurrent;
@@ -9,6 +10,7 @@ class ComfortLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
     return Column(
       children: [
         const Text(
