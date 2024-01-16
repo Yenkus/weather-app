@@ -13,9 +13,12 @@ class ComfortLevel extends StatelessWidget {
     ThemeData appTheme = AppStateContainer.of(context).theme;
     return Column(
       children: [
-        const Text(
+        Text(
           'Comfort Level',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: appTheme.colorScheme.secondary),
         ),
         const SizedBox(
           height: 20,
@@ -29,9 +32,12 @@ class ComfortLevel extends StatelessWidget {
                 CustomSliderWidths(trackWidth: 12, progressBarWidth: 12),
             infoProperties: InfoProperties(
                 bottomLabelText: "Hummidity",
-                bottomLabelStyle: const TextStyle(
-                  fontSize: 14,
-                )),
+                mainLabelStyle: TextStyle(
+                    fontSize: 30,
+                    color: appTheme.colorScheme.secondary,
+                    fontWeight: FontWeight.w100),
+                bottomLabelStyle: TextStyle(
+                    fontSize: 14, color: appTheme.colorScheme.secondary)),
             animationEnabled: true,
           ),
         ),
@@ -42,13 +48,17 @@ class ComfortLevel extends StatelessWidget {
             children: [
               Text(
                 'Feels Like ${weatherDataCurrent.current.feels_like}',
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.secondary),
               ),
               Text(
                 'UV Index ${weatherDataCurrent.current.uvi}',
-                style:
-                    const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.secondary),
               )
             ],
           ),

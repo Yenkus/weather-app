@@ -23,10 +23,10 @@ class AppStateContainer extends StatefulWidget {
 }
 
 class _AppStateContainerState extends State<AppStateContainer> {
-  ThemeData _theme = Themes.getTheme(Themes.DARK_THEME_CODE);
-  int themeCode = Themes.DARK_THEME_CODE;
-  // ThemeData _theme = Themes.getTheme(Themes.LIGHT_THEME_CODE);
-  // int themeCode = Themes.LIGHT_THEME_CODE;
+  // ThemeData _theme = Themes.getTheme(Themes.DARK_THEME_CODE);
+  // int themeCode = Themes.DARK_THEME_CODE;
+  ThemeData _theme = Themes.getTheme(Themes.LIGHT_THEME_CODE);
+  int themeCode = Themes.LIGHT_THEME_CODE;
   TemperatureUnit temperatureUnit = TemperatureUnit.celsius;
 
   @override

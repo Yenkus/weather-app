@@ -33,13 +33,16 @@ class SunInfo extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'Sun Rise',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.secondary),
               ),
               Text(
                 getTime(weatherDataCurrent.current.sunrise!),
-                style: const TextStyle(fontSize: 13),
+                style: TextStyle(
+                    fontSize: 13, color: appTheme.colorScheme.secondary),
               ),
             ],
           ),
@@ -58,12 +61,15 @@ class SunInfo extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'Sun Set',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.secondary),
               ),
               Text(getTime(weatherDataCurrent.current.sunset!),
-                  style: const TextStyle(fontSize: 13)),
+                  style: TextStyle(
+                      fontSize: 13, color: appTheme.colorScheme.secondary)),
             ],
           ),
         )

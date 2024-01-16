@@ -84,9 +84,10 @@ class HourlyDataWidget extends StatelessWidget {
       children: [
         Container(
           alignment: Alignment.topCenter,
-          child: const Text(
+          child: Text(
             'Today',
-            style: TextStyle(fontSize: 18),
+            style:
+                TextStyle(fontSize: 18, color: appTheme.colorScheme.secondary),
           ),
         ),
         hourlyList(),
@@ -131,6 +132,7 @@ class HourlyDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -139,9 +141,10 @@ class HourlyDetails extends StatelessWidget {
           child: Text(
             getTime(timeStamp),
             style: index == cardindex
-                ? const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white)
-                : null,
+                ? TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.primary)
+                : TextStyle(color: appTheme.colorScheme.secondary),
           ),
         ),
         Container(
@@ -157,9 +160,10 @@ class HourlyDetails extends StatelessWidget {
           child: Text(
             getFormattedTemperature(context: context, temperature: temperature),
             style: index == cardindex
-                ? const TextStyle(
-                    fontWeight: FontWeight.bold, color: Colors.white)
-                : null,
+                ? TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.primary)
+                : TextStyle(color: appTheme.colorScheme.secondary),
           ),
         ),
       ],
