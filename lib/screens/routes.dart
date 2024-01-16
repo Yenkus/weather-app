@@ -7,6 +7,6 @@ class Routes {
   static final mainRoute = <String, WidgetBuilder>{
     '/home': (context) => const HomeScreen(),
     '/settings': (context) => const SettingsScreen(),
-    '/menu': (context) => const WeatherCityManagerPage(),
+    '/menu': (context) => CityManagerPage(),
   };
 }

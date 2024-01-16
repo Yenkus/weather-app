@@ -100,7 +100,9 @@ class GlobalController extends GetxController {
       _lat.value = value.latitude;
       _lng.value = value.longitude;
 
-      return fetchData().getData(_lat.value, _lng.value, unit!).then((value) {
+      return fetchData()
+          .getData(_lat.value, _lng.value, unit ?? TemperatureUnit.celsius)
+          .then((value) {
         weatherData.value = value;
         _isLoading.value = false;
       });

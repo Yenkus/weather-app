@@ -55,8 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const WeatherCityManagerPage()));
+                              builder: (context) => CityManagerPage()));
                     },
                     icon: const Icon(
                       Icons.menu,

@@ -11,56 +11,25 @@ import 'package:weatherapp_starter_project/models/weather_data.dart';
 import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
 import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
 
-class WeatherCityManagerPage extends StatefulWidget {
-  const WeatherCityManagerPage({super.key});
+import 'package:flutter/material.dart';
+
+class CityManagerPage extends StatefulWidget {
+  const CityManagerPage({super.key});
 
   @override
-  _WeatherCityManagerPageState createState() => _WeatherCityManagerPageState();
+  _CityManagerPageState createState() => _CityManagerPageState();
 }
 
-class _WeatherCityManagerPageState extends State<WeatherCityManagerPage> {
-  final globalcontroller = Get.put(GlobalController(), permanent: true);
-  TextEditingController address = TextEditingController();
-  List<String> cityManager = [];
+class _CityManagerPageState extends State<CityManagerPage> {
+  List<String> searchedCities = [];
 
-  void addToCityManager(String cityName) {
-    setState(() {
-      cityManager.add(cityName);
-    });
-  }
+  final TextEditingController _cityController = TextEditingController();
 
-  Future<void> fetchWeatherForCity(
-      String cityName, TemperatureUnit temperatureUnit) async {
-    fetchData dataFetcher = fetchData();
-    try {
-      WeatherData cityWeatherData =
-          await dataFetcher.getDataForCity(cityName, temperatureUnit);
-      globalcontroller.checkStatus(cityWeatherData);
-    } catch (e) {
-      print('Error fetching weather data for $cityName: $e');
-      // Handle the error if fetching data fails
-    }
-  }
-
-  void searchLocation(String text) async {
-    if (text.isNotEmpty) {
-      var googlePlace = GooglePlace(
-          "<AIzaSyA28M-Ufy9RSZB1ShWi527M02VUThRx1sU>"); // Replace with your API key
-      var result = await googlePlace.search.getTextSearch(text, type: 'place');
-
-      List<String> searchResults = [];
-
-      if (result != null && result.results != null) {
-        searchResults =
-            result.results!.map((place) => place.formattedAddress!).toList();
-      }
-
+  void changeCity(String newCity) async {
+    // Your existing changeCity logic here
+    if (!searchedCities.contains(newCity)) {
       setState(() {
-        cityManager = searchResults;
-      });
-    } else {
-      setState(() {
-        cityManager.clear();
+        searchedCities.add(newCity);
       });
     }
   }
@@ -69,47 +38,33 @@ class _WeatherCityManagerPageState extends State<WeatherCityManagerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Weather City Manager'),
+        title: const Text('City Manager'),
       ),
       body: Column(
         children: [
-          TextFormField(
-            controller: address,
-            onChanged: (text) => searchLocation(text),
-            decoration: InputDecoration(
-              hintText: 'Search city...',
-              hintStyle: TextStyle(
-                fontSize: 18,
-                color: Colors.white.withOpacity(0.7),
-                fontWeight: FontWeight.w600,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _cityController,
+              decoration: InputDecoration(
+                hintText: 'Enter City',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    changeCity(_cityController.text);
+                  },
+                ),
               ),
-              prefixIcon: Icon(
-                Icons.search_rounded,
-                size: 25,
-                color: Colors.white.withOpacity(0.7),
-              ),
-              border: InputBorder.none,
-
-              // Your input decoration
+              onSubmitted: (newCity) {
+                changeCity(newCity);
+              },
             ),
           ),
           Expanded(
             child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: cityManager.length,
+              itemCount: searchedCities.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(cityManager[index]),
-                  onTap: () {
-                    String selectedCity = cityManager[index];
-                    fetchWeatherForCity(selectedCity,
-                        AppStateContainer.of(context).temperatureUnit);
-                  },
-                  // onTap: () {
-                  //   String selectedCity = cityManager[index];
-                  //   fetchWeatherForCity(selectedCity);
-                  // },
-                );
+                return AnimatedCardTile(cityName: searchedCities[index]);
               },
             ),
           ),
@@ -118,6 +73,148 @@ class _WeatherCityManagerPageState extends State<WeatherCityManagerPage> {
     );
   }
 }
+
+class AnimatedCardTile extends StatelessWidget {
+  final String cityName;
+
+  const AnimatedCardTile({super.key, required this.cityName});
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(-1, 0),
+        end: Offset.zero,
+      ).animate(CurvedAnimation(
+        parent: AnimationController(
+          duration: const Duration(milliseconds: 500),
+          vsync: Scaffold.of(context),
+        )..forward(),
+        curve: Curves.easeInOut,
+      )),
+      child: Card(
+        child: ListTile(
+          title: Text(cityName),
+          // Add other details or actions as needed
+        ),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: CityManagerPage(),
+  ));
+}
+
+// class WeatherCityManagerPage extends StatefulWidget {
+//   const WeatherCityManagerPage({super.key});
+
+//   @override
+//   _WeatherCityManagerPageState createState() => _WeatherCityManagerPageState();
+// }
+
+// class _WeatherCityManagerPageState extends State<WeatherCityManagerPage> {
+//   final globalcontroller = Get.put(GlobalController(), permanent: true);
+//   TextEditingController address = TextEditingController();
+//   List<String> cityManager = [];
+
+//   void addToCityManager(String cityName) {
+//     setState(() {
+//       cityManager.add(cityName);
+//     });
+//   }
+
+//   Future<void> fetchWeatherForCity(
+//       String cityName, TemperatureUnit temperatureUnit) async {
+//     fetchData dataFetcher = fetchData();
+//     try {
+//       WeatherData cityWeatherData =
+//           await dataFetcher.getDataForCity(cityName, temperatureUnit);
+//       globalcontroller.checkStatus(cityWeatherData);
+//     } catch (e) {
+//       print('Error fetching weather data for $cityName: $e');
+//       // Handle the error if fetching data fails
+//     }
+//   }
+
+//   void searchLocation(String text) async {
+//     if (text.isNotEmpty) {
+//       var googlePlace = GooglePlace(
+//           "<AIzaSyA28M-Ufy9RSZB1ShWi527M02VUThRx1sU>"); // Replace with your API key
+//       var result = await googlePlace.search.getTextSearch(text, type: 'place');
+
+//       List<String> searchResults = [];
+
+//       if (result != null && result.results != null) {
+//         searchResults =
+//             result.results!.map((place) => place.formattedAddress!).toList();
+//       }
+
+//       setState(() {
+//         cityManager = searchResults;
+//       });
+//     } else {
+//       setState(() {
+//         cityManager.clear();
+//       });
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Weather City Manager'),
+//       ),
+//       body: Column(
+//         children: [
+//           TextFormField(
+//             controller: address,
+//             onChanged: (text) => searchLocation(text),
+//             decoration: InputDecoration(
+//               hintText: 'Search city...',
+//               hintStyle: TextStyle(
+//                 fontSize: 18,
+//                 color: Colors.white.withOpacity(0.7),
+//                 fontWeight: FontWeight.w600,
+//               ),
+//               prefixIcon: Icon(
+//                 Icons.search_rounded,
+//                 size: 25,
+//                 color: Colors.white.withOpacity(0.7),
+//               ),
+//               border: InputBorder.none,
+
+//               // Your input decoration
+//             ),
+//           ),
+//           Expanded(
+//             child: ListView.builder(
+//               shrinkWrap: true,
+//               itemCount: cityManager.length,
+//               itemBuilder: (context, index) {
+//                 return ListTile(
+//                   title: Text(cityManager[index]),
+//                   onTap: () {
+//                     String selectedCity = cityManager[index];
+//                     fetchWeatherForCity(selectedCity,
+//                         AppStateContainer.of(context).temperatureUnit);
+//                   },
+//                   // onTap: () {
+//                   //   String selectedCity = cityManager[index];
+//                   //   fetchWeatherForCity(selectedCity);
+//                   // },
+//                 );
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 
 // commented early hours of the 12th january 2024
