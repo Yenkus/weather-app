@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // backgroundColor: CustomColors.firstGradientColor,
           title: Text(
             'My Weather',
-            style: TextStyle(color: value.appBarItemsColor),
+            style: TextStyle(color: appTheme.colorScheme.secondary),
           ),
           // title: const Text('My Weather'),
           actions: (value.hasDataLoaded == true)
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     icon: Icon(
                       Icons.menu,
-                      color: value.appBarItemsColor,
+                      color: appTheme.colorScheme.secondary,
                     ),
                   ),
                   IconButton(
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     icon: Icon(
                       Icons.settings,
-                      color: value.appBarItemsColor,
+                      color: appTheme.colorScheme.secondary,
                     ),
                   ),
                 ]

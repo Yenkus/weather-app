@@ -23,6 +23,7 @@ class CurrentWeatherWidget extends StatelessWidget {
   }
 
   Widget currentWeatherDataWidget(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -40,10 +41,10 @@ class CurrentWeatherWidget extends StatelessWidget {
           text: TextSpan(children: [
             TextSpan(
               text: getTemperature(context),
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 68,
-                color: CustomColors.textColorBlack,
+                color: appTheme.colorScheme.secondary,
               ),
             ),
             TextSpan(
@@ -60,7 +61,8 @@ class CurrentWeatherWidget extends StatelessWidget {
     );
   }
 
-  Widget moreDetailsOnCurrentWeatherData() {
+  Widget moreDetailsOnCurrentWeatherData(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
     return Column(
       children: [
         Row(
@@ -109,8 +111,10 @@ class CurrentWeatherWidget extends StatelessWidget {
               width: 60,
               child: Text(
                 "${weatherDataCurrent.current.windSpeed} km/h",
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.secondary),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -119,8 +123,10 @@ class CurrentWeatherWidget extends StatelessWidget {
               width: 60,
               child: Text(
                 "${weatherDataCurrent.current.clouds}%",
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.secondary),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -129,8 +135,10 @@ class CurrentWeatherWidget extends StatelessWidget {
               width: 60,
               child: Text(
                 "${weatherDataCurrent.current.humidity}%",
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: appTheme.colorScheme.secondary),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -151,7 +159,7 @@ class CurrentWeatherWidget extends StatelessWidget {
           height: 20,
         ),
         // More details
-        moreDetailsOnCurrentWeatherData(),
+        moreDetailsOnCurrentWeatherData(context),
       ],
     );
   }

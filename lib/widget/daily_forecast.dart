@@ -32,7 +32,8 @@ class DailyForecast extends StatelessWidget {
     }
   }
 
-  Widget dailyList() {
+  Widget dailyList(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
     return SizedBox(
       child: ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
@@ -49,7 +50,10 @@ class DailyForecast extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(getDay(weatherDataDaily.daily[index].dt!)),
+                    Text(
+                      getDay(weatherDataDaily.daily[index].dt!),
+                      style: TextStyle(color: appTheme.colorScheme.secondary),
+                    ),
                     SizedBox(
                       height: 30,
                       width: 30,
@@ -59,7 +63,7 @@ class DailyForecast extends StatelessWidget {
                     ),
                     Text(
                       '${getFormattedTemperature(temperature: weatherDataDaily.daily[index].temp!.min!, context: context)} / ${getFormattedTemperature(temperature: weatherDataDaily.daily[index].temp!.max!, context: context)}',
-
+                      style: TextStyle(color: appTheme.colorScheme.secondary),
                       // '${getFormattedTemperature(weatherDataDaily.daily[index].temp!.min)} / ${getFormattedTemperature(weatherDataDaily.daily[index].temp!.max)}',
                     ),
                   ],
@@ -87,12 +91,13 @@ class DailyForecast extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.topLeft,
-            child: const Text(
+            child: Text(
               '7 Days Forecast',
-              style: TextStyle(fontSize: 17),
+              style: TextStyle(
+                  fontSize: 17, color: appTheme.colorScheme.secondary),
             ),
           ),
-          dailyList(),
+          dailyList(context),
         ],
       ),
     );

@@ -93,18 +93,18 @@ class _HeaderScState extends State<HeaderSc> {
               ? Text(
                   city,
                   style: TextStyle(
-                    height: 2,
-                    fontSize: 30,
-                    color: appTheme.textTheme.displayLarge!.color,
-                  ),
+                      height: 2,
+                      fontSize: 30,
+                      // color: appTheme.textTheme.displayLarge!.color,
+                      color: appTheme.colorScheme.secondary),
                 )
               : Text(
                   'Getting the name...',
                   style: TextStyle(
-                    height: 2,
-                    fontSize: 20,
-                    color: appTheme.textTheme.displayLarge!.color,
-                  ),
+                      height: 2,
+                      fontSize: 20,
+                      // color: appTheme.textTheme.displayLarge!.color,
+                      color: appTheme.colorScheme.secondary),
                 ),
         ),
         Container(
@@ -113,10 +113,10 @@ class _HeaderScState extends State<HeaderSc> {
           child: Text(
             date,
             style: TextStyle(
-              height: 1.5,
-              fontSize: 14,
-              color: appTheme.textTheme.displayMedium!.color,
-            ),
+                height: 1.5,
+                fontSize: 14,
+                // color: appTheme.textTheme.displayMedium!.color,
+                color: appTheme.colorScheme.secondary),
           ),
         ),
         ElevatedButton(
@@ -124,7 +124,10 @@ class _HeaderScState extends State<HeaderSc> {
             // Add functionality for the button
             print("Button pressed!");
           },
-          child: const Text('Your Button'),
+          child: Text(
+            'Your Button',
+            style: TextStyle(color: appTheme.colorScheme.secondary),
+          ),
         ),
         const SizedBox(height: 20), // Add spacing if needed
 
@@ -168,6 +171,7 @@ class AnimatedSearchBar extends StatefulWidget {
 class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       height: widget.showSearchBar ? kToolbarHeight + 10 : 0,
@@ -188,6 +192,7 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
           child: TextField(
             controller: widget.cityController,
             decoration: InputDecoration(
+              hintStyle: TextStyle(color: appTheme.colorScheme.secondary),
               hintText: 'Enter City',
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),

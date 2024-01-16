@@ -22,7 +22,7 @@ class Themes {
           // 900: Colors.black87,
           50: Colors.black12,
           100: Colors.black26,
-          200: Colors.black87,
+          200: Colors.black38,
           300: Colors.black45,
           400: Colors.black54,
           500: Colors.black87,
