@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:weatherapp_starter_project/data/city_provider.dart';
+import 'package:weatherapp_starter_project/provider/city_provider.dart';
 import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
 import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
 
@@ -129,17 +129,18 @@ class _HeaderScState extends State<HeaderSc> {
         const SizedBox(height: 20), // Add spacing if needed
 
         // Example: Display a list of items
-        Expanded(
-          child: ListView.builder(
-            itemCount: 5, // Replace with your actual item count
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Item $index'),
-                // Add other details or actions as needed
-              );
-            },
-          ),
-        ),
+        // Expanded(
+        //   child: ListView.builder(
+        //     shrinkWrap: true,
+        //     itemCount: 5, // Replace with your actual item count
+        //     itemBuilder: (context, index) {
+        //       return ListTile(
+        //         title: Text('Item $index'),
+        //         // Add other details or actions as needed
+        //       );
+        //     },
+        //   ),
+        // ),
         // Add more UI components as needed
       ],
     );

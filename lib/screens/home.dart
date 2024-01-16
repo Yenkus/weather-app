@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:weatherapp_starter_project/data/city_provider.dart';
+import 'package:weatherapp_starter_project/provider/city_provider.dart';
 import 'package:weatherapp_starter_project/screens/city_manager.dart';
 import 'package:weatherapp_starter_project/screens/settings_page.dart';
 import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
@@ -43,9 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           backgroundColor: appTheme.primaryColor,
           // backgroundColor: CustomColors.firstGradientColor,
-          title: const Text(
+          title: Text(
             'My Weather',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: value.appBarItemsColor),
           ),
           // title: const Text('My Weather'),
           actions: (value.hasDataLoaded == true)
@@ -55,11 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CityManagerPage()));
+                              builder: (context) => const CityManagerPage()));
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.menu,
-                      color: Colors.white,
+                      color: value.appBarItemsColor,
                     ),
                   ),
                   IconButton(
@@ -69,9 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(
                               builder: (context) => const SettingsScreen()));
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.settings,
-                      color: Colors.white,
+                      color: value.appBarItemsColor,
                     ),
                   ),
                 ]

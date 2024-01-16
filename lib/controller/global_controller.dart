@@ -2,7 +2,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:weatherapp_starter_project/data/city_provider.dart';
+import 'package:weatherapp_starter_project/provider/city_provider.dart';
 import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
 import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
 

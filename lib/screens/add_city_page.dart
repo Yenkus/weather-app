@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:weatherapp_starter_project/data/city_provider.dart';
+import 'package:weatherapp_starter_project/provider/city_provider.dart';
 import 'package:weatherapp_starter_project/util/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:weatherapp_starter_project/data/city_provider.dart';
+import 'package:weatherapp_starter_project/provider/city_provider.dart';
 import 'package:weatherapp_starter_project/screens/routes.dart';
 import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
 import './screens/home.dart';

@@ -15,6 +15,20 @@ class CityProvider extends ChangeNotifier {
   bool edit = false;
   bool hasDataLoaded = false;
 
+  Color appBarItemsColor = Colors.black;
+
+  // change the appBar items color to black
+  void lightTheme() {
+    appBarItemsColor = Colors.black;
+    notifyListeners();
+  }
+
+  // change the appBar items color to black
+  void darkTheme() {
+    appBarItemsColor = Colors.white;
+    notifyListeners();
+  }
+
   void changeEditStatus() {
     edit = !edit;
     notifyListeners();
@@ -26,9 +40,9 @@ class CityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
-  List<City> _cities = [];
-  Set<String> _cityNames = {}; // A set to store the city names and avoid duplicates
+  final List<City> _cities = [];
+  final Set<String> _cityNames =
+      {}; // A set to store the city names and avoid duplicates
 
   List<City> get cities => _cities;
 
