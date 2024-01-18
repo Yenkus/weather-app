@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:get/get.dart';
-// import 'package:google_place/google_place.dart';
-import 'package:google_place_plus/google_place_plus.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:weatherapp_starter_project/api/api_key.dart';
-import 'package:weatherapp_starter_project/api/fetch_data.dart';
-import 'package:weatherapp_starter_project/controller/global_controller.dart';
-import 'package:weatherapp_starter_project/models/weather_data.dart';
+import 'package:weatherapp_starter_project/components/card_city_tiles.dart';
+import 'package:weatherapp_starter_project/provider/city_provider.dart';
+import 'package:weatherapp_starter_project/screens/home.dart';
+import 'package:weatherapp_starter_project/screens/settings_page.dart';
 import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
-import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
-
-import 'package:flutter/material.dart';
+import '../controller/global_controller.dart';
+import '../screens/home_screen.dart';
+import '../widget/city_card_tile.dart';
 
 class CityManagerPage extends StatefulWidget {
   const CityManagerPage({super.key});
@@ -21,93 +18,241 @@ class CityManagerPage extends StatefulWidget {
 }
 
 class _CityManagerPageState extends State<CityManagerPage> {
-  List<String> searchedCities = [];
-
-  final TextEditingController _cityController = TextEditingController();
-
-  void changeCity(String newCity) async {
-    // Your existing changeCity logic here
-    if (!searchedCities.contains(newCity)) {
-      setState(() {
-        searchedCities.add(newCity);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    ThemeData appTheme = AppStateContainer.of(context).theme;
+    final globalController = Get.put(GlobalController(), permanent: true);
+    final cityProvider = Provider.of<CityProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('City Manager'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _cityController,
-              decoration: InputDecoration(
-                hintText: 'Enter City',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    changeCity(_cityController.text);
-                  },
-                ),
-              ),
-              onSubmitted: (newCity) {
-                changeCity(newCity);
-              },
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: searchedCities.length,
-              itemBuilder: (context, index) {
-                return AnimatedCardTile(cityName: searchedCities[index]);
-              },
+        backgroundColor: appTheme.primaryColor,
+        title: Text(
+          'City Manager',
+          style: TextStyle(color: appTheme.colorScheme.secondary),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              cityProvider.changeEditStatus();
+            },
+            icon: Icon(
+              Icons.edit,
+              color: appTheme.colorScheme.secondary,
             ),
           ),
         ],
       ),
-    );
-  }
+      body: Column(
+        children: [
+          // Use the CityCardTile widget
+          CityCardTile(
+            cityNames: cityProvider.cities.map((city) => city.name).toList(),
+            onTap: (String cityName) {
+              // Handle tap on City Card Tile
+              globalController.city = cityName;
+              globalController.fetchData();
+              Get.to(const HomeScreen());
+            },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: cityProvider.cities.length,
+              itemBuilder: (context, index) {
+                // Existing Dismissible and Card widgets...
+                City city = cityProvider.cities[index];
+
+                return Dismissible(
+                  key: Key(city.name),
+                  direction: DismissDirection.endToStart,
+                  confirmDismiss: (direction) async {
+                    return await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Are you sure?'),
+                          content: Text(
+                              'Do you want to delete ${city.name} from the list?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              child: const Text('Yes'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(false);
+                              },
+                              child: const Text('No'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  onDismissed: (direction) {
+                    cityProvider.removeCity(city);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('${city.name} deleted'),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    child: ListTile(
+                      title: Text(city.name),
+                      subtitle: Text(
+                          '${city.temperature} °C, ${city.condition}'),
+                      trailing: cityProvider.edit
+                          ? Checkbox(
+                              value: cityProvider.selectedCities.contains(city),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value) {
+                                    cityProvider.selectedCities.add(city);
+                                  } else {
+                                    cityProvider.selectedCities.remove(city);
+                                  }
+                                });
+                              },
+                            )
+                          : null,
+                      onTap: () {
+                        globalController.city = city.name;
+                        globalController.fetchData();
+                        Get.to(const HomeScreen());
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+);
+}
 }
 
-class AnimatedCardTile extends StatelessWidget {
-  final String cityName;
 
-  const AnimatedCardTile({super.key, required this.cityName});
+// Commented on the 18th of January 2024
 
-  @override
-  Widget build(BuildContext context) {
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(-1, 0),
-        end: Offset.zero,
-      ).animate(CurvedAnimation(
-        parent: AnimationController(
-          duration: const Duration(milliseconds: 500),
-          vsync: Scaffold.of(context),
-        )..forward(),
-        curve: Curves.easeInOut,
-      )),
-      child: Card(
-        child: ListTile(
-          title: Text(cityName),
-          // Add other details or actions as needed
-        ),
-      ),
-    );
-  }
-}
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// // import 'package:google_place/google_place.dart';
+// import 'package:google_place_plus/google_place_plus.dart';
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'package:weatherapp_starter_project/api/api_key.dart';
+// import 'package:weatherapp_starter_project/api/fetch_data.dart';
+// import 'package:weatherapp_starter_project/controller/global_controller.dart';
+// import 'package:weatherapp_starter_project/models/weather_data.dart';
+// import 'package:weatherapp_starter_project/setting_stuf/app_state_container.dart';
+// import 'package:weatherapp_starter_project/setting_stuf/converter.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: CityManagerPage(),
-  ));
-}
+// import 'package:flutter/material.dart';
 
+// class CityManagerPage extends StatefulWidget {
+//   const CityManagerPage({super.key});
+
+//   @override
+//   _CityManagerPageState createState() => _CityManagerPageState();
+// }
+
+// class _CityManagerPageState extends State<CityManagerPage> {
+//   List<String> searchedCities = [];
+
+//   final TextEditingController _cityController = TextEditingController();
+
+//   void changeCity(String newCity) async {
+//     // Your existing changeCity logic here
+//     if (!searchedCities.contains(newCity)) {
+//       setState(() {
+//         searchedCities.add(newCity);
+//       });
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('City Manager'),
+//       ),
+//       body: Column(
+//         children: [
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: TextField(
+//               controller: _cityController,
+//               decoration: InputDecoration(
+//                 hintText: 'Enter City',
+//                 suffixIcon: IconButton(
+//                   icon: const Icon(Icons.search),
+//                   onPressed: () {
+//                     changeCity(_cityController.text);
+//                   },
+//                 ),
+//               ),
+//               onSubmitted: (newCity) {
+//                 changeCity(newCity);
+//               },
+//             ),
+//           ),
+//           Expanded(
+//             child: ListView.builder(
+//               itemCount: searchedCities.length,
+//               itemBuilder: (context, index) {
+//                 return AnimatedCardTile(cityName: searchedCities[index]);
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+// class AnimatedCardTile extends StatelessWidget {
+//   final String cityName;
+
+//   const AnimatedCardTile({super.key, required this.cityName});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return SlideTransition(
+//       position: Tween<Offset>(
+//         begin: const Offset(-1, 0),
+//         end: Offset.zero,
+//       ).animate(CurvedAnimation(
+//         parent: AnimationController(
+//           duration: const Duration(milliseconds: 500),
+//           vsync: Scaffold.of(context),
+//         )..forward(),
+//         curve: Curves.easeInOut,
+//       )),
+//       child: Card(
+//         child: ListTile(
+//           title: Text(cityName),
+//           // Add other details or actions as needed
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+// Commented before 18th of January 2024
 // class WeatherCityManagerPage extends StatefulWidget {
 //   const WeatherCityManagerPage({super.key});
 

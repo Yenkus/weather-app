@@ -42,8 +42,8 @@ class CurrentWeatherWidget extends StatelessWidget {
             TextSpan(
               text: getTemperature(context),
               style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 68,
+                fontWeight: FontWeight.w500,
+                fontSize: 50,
                 color: appTheme.colorScheme.secondary,
               ),
             ),
