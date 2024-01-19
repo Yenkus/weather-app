@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 
 // A class that represents a city and its weather information
 class City {
-  final String name;
-  final double temperature;
-  final String condition;
+  final String? name;
+  final double? temperature;
+  final String? condition;
 
-  City(this.name, this.temperature, this.condition);
+  City({this.name, this.temperature, this.condition});
 }
 
 // A class that holds the list of cities and provides methods to add and remove cities
@@ -54,7 +54,7 @@ class CityProvider extends ChangeNotifier {
     } else {
       // If no, add the city to the list and the set and notify the listeners
       _cities.add(city);
-      _cityNames.add(city.name);
+      _cityNames.add(city.name!);
       notifyListeners();
     }
   }

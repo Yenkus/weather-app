@@ -19,7 +19,7 @@ class GlobalController extends GetxController {
   final RxBool isDarkMode = false.obs;
   final RxBool isFahrenheit = false.obs;
 
-  // final city = City().obs;
+  final city = City().obs;
 
   RxBool checkStatus([WeatherData? cityWeatherData]) => _isLoading;
   RxDouble getlat() => _lat;
@@ -118,5 +118,9 @@ class GlobalController extends GetxController {
       print('Error fetching weather data for $cityName: $e');
       // Handle the error if fetching data fails
     }
+  }
+
+  setCity(String cityName) {
+    city.value = City(name: cityName, temperature: 0.0, condition: '');
   }
 }

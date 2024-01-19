@@ -80,12 +80,12 @@ class _HeaderScState extends State<HeaderSc> {
     return Column(
       children: [
         // Include the AnimatedSearchBar widget at the top
-        AnimatedSearchBar(
-          showSearchBar: showSearchBar,
-          toggleSearchBar: toggleSearchBar,
-          changeCity: changeCity,
-          cityController: _cityController,
-        ),
+        // AnimatedSearchBar(
+        //   showSearchBar: showSearchBar,
+        //   toggleSearchBar: toggleSearchBar,
+        //   changeCity: changeCity,
+        //   cityController: _cityController,
+        // ),
         Container(
           margin: const EdgeInsets.only(left: 20, right: 20),
           alignment: Alignment.topLeft,
@@ -119,17 +119,17 @@ class _HeaderScState extends State<HeaderSc> {
                 color: appTheme.colorScheme.secondary),
           ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            // Add functionality for the button
-            print("Button pressed!");
-          },
-          child: Text(
-            'Your Button',
-            style: TextStyle(color: appTheme.colorScheme.secondary),
-          ),
-        ),
-        const SizedBox(height: 20), // Add spacing if needed
+        // ElevatedButton(
+        //   onPressed: () {
+        //     // Add functionality for the button
+        //     print("Button pressed!");
+        //   },
+        //   child: Text(
+        //     'Your Button',
+        //     style: TextStyle(color: appTheme.colorScheme.secondary),
+        //   ),
+        // ),
+        // const SizedBox(height: 20), // Add spacing if needed
 
         // Example: Display a list of items
         // Expanded(
